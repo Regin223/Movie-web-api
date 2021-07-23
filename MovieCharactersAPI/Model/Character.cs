@@ -23,7 +23,7 @@ namespace MovieCharactersAPI.Model
         public string Gender { get; set; }
 
         [MaxLength(2083)]
-        public string Url { get; set; }
+        public string Picture { get; set; }
 
         public ICollection<Movie> Movies { get; set; }
 
