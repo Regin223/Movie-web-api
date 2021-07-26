@@ -8,7 +8,7 @@ namespace MovieCharactersAPI.Repositories
     /// <summary>
     /// Generic interface <c>IRepository</c> with CRUD functions.
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="T"></typeparam>
     public interface IRepository<TEntity>
     {
         public Task<TEntity> GetById(int id);

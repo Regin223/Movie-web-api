@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MovieCharactersAPI.Model;
 using Microsoft.EntityFrameworkCore;
+using MovieCharactersAPI.Repositories;
 
 namespace MovieCharactersAPI
 {
@@ -36,6 +37,7 @@ namespace MovieCharactersAPI
             });
             services.AddDbContext<MovieCharacterDbContext>(option => 
                 option.UseSqlServer(Configuration.GetConnectionString("DefultConnection")));
+            services.AddScoped(typeof(IRepository<Character>), typeof(CharacterRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

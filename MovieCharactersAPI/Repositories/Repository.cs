@@ -1,22 +1,17 @@
-﻿using MovieCharactersAPI.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MovieCharactersAPI.Model;
 
 namespace MovieCharactersAPI.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity>
     {
-        private readonly MovieCharacterDbContext _dbContext;
-        public Repository(MovieCharacterDbContext context)
-        {
-            _dbContext = context;
-        }
 
-        public Task<TEntity> GetById(int id)
-        {
-            throw new NotImplementedException();
+        private readonly MovieCharacterDbContext _context;
+        public Repository(MovieCharacterDbContext context){
+            _context = context;
         }
 
         public Task<TEntity> Create(TEntity entity)
@@ -34,7 +29,10 @@ namespace MovieCharactersAPI.Repositories
             throw new NotImplementedException();
         }
 
-        
+        public Task<TEntity> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task Update(TEntity entity)
         {
