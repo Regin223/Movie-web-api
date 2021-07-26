@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Model
 {
+    /// <summary>
+    /// Class <c>Movie</c> represent the model for a Movie with necessary properties 
+    /// according to the assignment instruction
+    /// </summary>
     public class Movie
     {
 

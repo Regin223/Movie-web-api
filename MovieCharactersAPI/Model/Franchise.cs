@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Model
 {
+    /// <summary>
+    /// Class <c>Franchise</c> represent the model for a Franchise with necessary properties 
+    /// according to the assignment instruction
+    /// </summary>
     public class Franchise
     {
-
         public int FranchiseId { get; set; }
 
         [Required]

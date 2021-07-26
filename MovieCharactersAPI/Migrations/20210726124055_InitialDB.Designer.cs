@@ -9,8 +9,8 @@ using MovieCharactersAPI.Model;
 namespace MovieCharactersAPI.Migrations
 {
     [DbContext(typeof(MovieCharacterDbContext))]
-    [Migration("20210726062939_InitialDb")]
-    partial class InitialDb
+    [Migration("20210726124055_InitialDB")]
+    partial class InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,17 +22,39 @@ namespace MovieCharactersAPI.Migrations
 
             modelBuilder.Entity("CharacterMovie", b =>
                 {
-                    b.Property<int>("CharactersCharacterId")
+                    b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MoviesMovieId")
+                    b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.HasKey("CharactersCharacterId", "MoviesMovieId");
+                    b.HasKey("CharacterId", "MovieId");
 
-                    b.HasIndex("MoviesMovieId");
+                    b.HasIndex("MovieId");
 
                     b.ToTable("CharacterMovie");
+
+                    b.HasData(
+                        new
+                        {
+                            CharacterId = 1,
+                            MovieId = 1
+                        },
+                        new
+                        {
+                            CharacterId = 2,
+                            MovieId = 1
+                        },
+                        new
+                        {
+                            CharacterId = 3,
+                            MovieId = 1
+                        },
+                        new
+                        {
+                            CharacterId = 4,
+                            MovieId = 2
+                        });
                 });
 
             modelBuilder.Entity("MovieCharactersAPI.Model.Character", b =>
@@ -206,13 +228,13 @@ namespace MovieCharactersAPI.Migrations
                 {
                     b.HasOne("MovieCharactersAPI.Model.Character", null)
                         .WithMany()
-                        .HasForeignKey("CharactersCharacterId")
+                        .HasForeignKey("CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MovieCharactersAPI.Model.Movie", null)
                         .WithMany()
-                        .HasForeignKey("MoviesMovieId")
+                        .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

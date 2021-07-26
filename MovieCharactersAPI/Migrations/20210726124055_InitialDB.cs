@@ -2,7 +2,7 @@
 
 namespace MovieCharactersAPI.Migrations
 {
-    public partial class InitialDb : Migration
+    public partial class InitialDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -64,21 +64,21 @@ namespace MovieCharactersAPI.Migrations
                 name: "CharacterMovie",
                 columns: table => new
                 {
-                    CharactersCharacterId = table.Column<int>(type: "int", nullable: false),
-                    MoviesMovieId = table.Column<int>(type: "int", nullable: false)
+                    CharacterId = table.Column<int>(type: "int", nullable: false),
+                    MovieId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacterMovie", x => new { x.CharactersCharacterId, x.MoviesMovieId });
+                    table.PrimaryKey("PK_CharacterMovie", x => new { x.CharacterId, x.MovieId });
                     table.ForeignKey(
-                        name: "FK_CharacterMovie_Characters_CharactersCharacterId",
-                        column: x => x.CharactersCharacterId,
+                        name: "FK_CharacterMovie_Characters_CharacterId",
+                        column: x => x.CharacterId,
                         principalTable: "Characters",
                         principalColumn: "CharacterId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharacterMovie_Movies_MoviesMovieId",
-                        column: x => x.MoviesMovieId,
+                        name: "FK_CharacterMovie_Movies_MovieId",
+                        column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "MovieId",
                         onDelete: ReferentialAction.Cascade);
@@ -119,10 +119,21 @@ namespace MovieCharactersAPI.Migrations
                 columns: new[] { "MovieId", "Director", "FranchiseId", "Genre", "MovieTitle", "ReleaseYear", "Trailer" },
                 values: new object[] { 3, "Peter Jackson", 2, "Adventure", "The Two Towers", 2002, "https://www.youtube.com/watch?v=LbfMDwc4azU" });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_CharacterMovie_MoviesMovieId",
+            migrationBuilder.InsertData(
                 table: "CharacterMovie",
-                column: "MoviesMovieId");
+                columns: new[] { "CharacterId", "MovieId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 1 },
+                    { 3, 1 },
+                    { 4, 2 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacterMovie_MovieId",
+                table: "CharacterMovie",
+                column: "MovieId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Movies_FranchiseId",
