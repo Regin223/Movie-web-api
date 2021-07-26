@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MovieCharactersAPI.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieCharactersAPI
 {
@@ -32,6 +34,8 @@ namespace MovieCharactersAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieCharactersAPI", Version = "v1" });
             });
+            services.AddDbContext<MovieCharacterDbContext>(option => 
+                option.UseSqlServer(Configuration.GetConnectionString("DefultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
