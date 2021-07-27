@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MovieCharactersAPI.Model;
+using MovieCharactersAPI.Model; 
 
 namespace MovieCharactersAPI.Repositories
 {
@@ -16,29 +16,38 @@ namespace MovieCharactersAPI.Repositories
         }
         public async Task<IEnumerable<Character>> GetAll()
         {
-            return await _dbContext.Characters.Include(m => m.Movies).ToListAsync();
+            var characters = await _dbContext.Characters.Include(m => m.Movies).ToListAsync();
+            return characters;
         }
         public async Task<Character> GetById(int id)
         {
-            return await _dbContext.Characters.Where(m => m.CharacterId == id).FirstAsync();
+            var character = await _dbContext.Characters.Include(m => m.Movies).Where(c => c.CharacterId == id).FirstAsync();
+            return character;
         }
-        public Task<Character> Create(Character entity)
+
+        public bool Exsist(int id)
         {
-            throw new NotImplementedException();
+            return _dbContext.Characters.Any(c => c.CharacterId == id);
+        }
+        public async Task Update(Character entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Character> Create(Character entity)
+        {
+            _dbContext.Characters.Add(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
         }
 
         public Task Delete(Character entity)
         {
             throw new NotImplementedException();
         }
-
        
 
-       
-
-        public Task Update(Character entity)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

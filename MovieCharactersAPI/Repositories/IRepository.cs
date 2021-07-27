@@ -15,6 +15,8 @@ namespace MovieCharactersAPI.Repositories
 
         public Task<IEnumerable<T>> GetAll();
 
+        public bool Exsist(int id);
+
         public Task<T> Create(T entity);
 
         public Task Update(T entity);

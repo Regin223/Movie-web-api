@@ -37,6 +37,8 @@ namespace MovieCharactersAPI
             });
             services.AddDbContext<MovieCharacterDbContext>(option => 
                 option.UseSqlServer(Configuration.GetConnectionString("DefultConnection")));
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddScoped(typeof(IRepository<Character>), typeof(CharacterRepository));
         }
 
