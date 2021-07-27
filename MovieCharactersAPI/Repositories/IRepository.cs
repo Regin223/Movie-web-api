@@ -9,16 +9,16 @@ namespace MovieCharactersAPI.Repositories
     /// Generic interface <c>IRepository</c> with CRUD functions.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IRepository<TEntity>
+    public interface IRepository<T>
     {
-        public Task<TEntity> GetById(int id);
+        public Task<T> GetById(int id);
 
-        public Task<IEnumerable<TEntity>> GetAll();
+        public Task<IEnumerable<T>> GetAll();
 
-        public Task<TEntity> Create(TEntity entity);
+        public Task<T> Create(T entity);
 
-        public Task Update(TEntity entity);
+        public Task Update(T entity);
 
-        public Task Delete(TEntity entity);
+        public Task Delete(T entity);
     }
 }

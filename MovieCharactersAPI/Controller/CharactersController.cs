@@ -24,6 +24,12 @@ namespace MovieCharactersAPI.Controller
             return await _repository.GetAll();
         }
         
+        [HttpGet("{id}")]
+        public async Task<Character> GetById(int id)
+        {
+            return await _repository.GetById(id);
+        }
+        
         
     }
 }
