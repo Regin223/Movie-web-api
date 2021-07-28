@@ -38,8 +38,8 @@ namespace MovieCharactersAPI
             services.AddDbContext<MovieCharacterDbContext>(option => 
                 option.UseSqlServer(Configuration.GetConnectionString("DefultConnection")));
             services.AddAutoMapper(typeof(Startup));
-
             services.AddScoped(typeof(IRepository<Character>), typeof(CharacterRepository));
+            services.AddScoped(typeof(IMovieRepository), typeof(MovieRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
