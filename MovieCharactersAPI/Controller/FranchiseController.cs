@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MovieCharactersAPI.Model;
 using MovieCharactersAPI.Model.DTO.Franchise;
 using MovieCharactersAPI.Repositories;
 using System;
@@ -38,6 +39,22 @@ namespace MovieCharactersAPI.Controller
                 return NotFound();
             }
             return _mapper.Map<FranchiseReadDTO>(franchise);
+        }
+        [HttpPut("id")]
+        public async Task<ActionResult> PutFranchise(int id, FranchiseEditDTO franchiseDto)
+        {
+            if(id != franchiseDto.FranchiseId)
+            {
+                return BadRequest();
+            }
+            if (!_repository.Exsist(id))
+            {
+                return NotFound();
+            }
+            Franchise franchise = _mapper.Map<Franchise>(franchiseDto);
+            await _repository.Update(franchise);
+            return NoContent();
+
         }
 
 

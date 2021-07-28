@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MovieCharactersAPI.Model;
 using System;
 using System.Collections.Generic;
@@ -11,24 +10,28 @@ namespace MovieCharactersAPI.Repositories
     public class FranchiseRepository : IFranchiseRepository
     {
 
-        private readonly MovieCharacterDbContext _dbcontext;
-        private readonly IMapper _mapper;
+        private readonly MovieCharacterDbContext _dbContext;
+        
 
 
-        public FranchiseRepository(MovieCharacterDbContext context, IMapper mapper)
+        public FranchiseRepository(MovieCharacterDbContext context)
         {
-            _dbcontext = context;
-            _mapper = mapper;
+            _dbContext = context;
         }
         public async Task<IEnumerable<Franchise>> GetAll()
         {
-            return await _dbcontext.Franchises.Include(m => m.Movies).ToListAsync();
+            return await _dbContext.Franchises.Include(m => m.Movies).ToListAsync();
         }
 
         public async Task<Franchise> GetById(int id)
         {
-            Franchise franchise = await _dbcontext.Franchises.Include(m => m.Movies).Where(f => f.FranchiseId == id).FirstAsync();
+            Franchise franchise = await _dbContext.Franchises.Include(m => m.Movies).Where(f => f.FranchiseId == id).FirstAsync();
             return franchise;
+        }
+        public async Task Update(Franchise entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
 
         public Task<Franchise> Create(Franchise entity)
@@ -43,10 +46,10 @@ namespace MovieCharactersAPI.Repositories
 
         public bool Exsist(int id)
         {
-            throw new NotImplementedException();
+            return _dbContext.Franchises.Any(f => f.FranchiseId == id);
         }
 
-        public Task Update(Franchise entity)
+        public Task Delete(int id)
         {
             throw new NotImplementedException();
         }
