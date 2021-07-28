@@ -40,6 +40,7 @@ namespace MovieCharactersAPI
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped(typeof(IRepository<Character>), typeof(CharacterRepository));
             services.AddScoped(typeof(IMovieRepository), typeof(MovieRepository));
+            services.AddScoped(typeof(IFranchiseRepository), typeof(FranchiseRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
