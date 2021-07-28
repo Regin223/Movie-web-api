@@ -14,7 +14,7 @@ namespace MovieCharactersAPI.Profiles
         {
             CreateMap<Movie, MovieReadDTO>()
                 .ForMember(cdto => cdto.Characters, opt => opt
-                .MapFrom(m => m.Characters.Select(m => m.CharacterId).ToList()));
+                .MapFrom(m => m.CharacterMovies.Select(m => m.CharacterId).ToList()));
 
             CreateMap<MovieEditDTO, Movie>();
 

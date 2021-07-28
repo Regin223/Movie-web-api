@@ -57,7 +57,6 @@ namespace MovieCharactersAPI.DataHelpers
         /// <returns>List of Franchises</returns>
         public static List<Franchise> SeedFranchiseHelper()
         {
-            List<Movie> movies = SeedMovieHelper();
             List<Franchise> franchises = new List<Franchise>()
             {
                 new Franchise()

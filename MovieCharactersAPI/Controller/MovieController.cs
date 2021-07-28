@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MovieCharactersAPI.Model;
+using MovieCharactersAPI.Model.DTO.Character;
 using MovieCharactersAPI.Model.DTO.Movie;
 using MovieCharactersAPI.Repositories;
 using System;
@@ -14,7 +15,7 @@ namespace MovieCharactersAPI.Controller
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly IRepository<Movie> _repository;
+        private readonly IMovieRepository _repository;
         private readonly IMapper _mapper;
 
         public MovieController(IMovieRepository repository, IMapper mapper)
@@ -44,7 +45,7 @@ namespace MovieCharactersAPI.Controller
         }
 
         [HttpPut("id")]
-        public async Task<ActionResult> PutCharacter(int id, MovieEditDTO movieDTO)
+        public async Task<ActionResult> PutMovie(int id, MovieEditDTO movieDTO)
         {
 
             if (id != movieDTO.MovieId)
@@ -63,7 +64,7 @@ namespace MovieCharactersAPI.Controller
         }
 
         [HttpPost]
-        public async Task<ActionResult<Character>> PostCharacter(MovieCreateDTO movieDTO)
+        public async Task<ActionResult<MovieReadDTO>> PostMovie(MovieCreateDTO movieDTO)
         {
 
             Movie movie = _mapper.Map<Movie>(movieDTO);
@@ -88,5 +89,19 @@ namespace MovieCharactersAPI.Controller
 
             return NoContent();
         }
+
+        [HttpPost]
+        [Route("/createCharaterToMovie")]
+        public async Task<ActionResult<MovieReadDTO>> CreateCharacterAddToMovie(CharacterReadDTO characterDTO, int movieId)
+        {
+            if (!_repository.Exsist(movieId))
+            {
+                return NotFound();
+            }
+
+            Character character = _mapper.Map<Character>(characterDTO);
+            Movie movie = await _repository.AddCharacterToMovie(character, movieId);
+        }
+
     }
 }

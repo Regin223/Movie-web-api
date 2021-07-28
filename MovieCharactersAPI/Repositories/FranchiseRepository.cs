@@ -41,19 +41,28 @@ namespace MovieCharactersAPI.Repositories
             return entity;
         }
 
-        public Task Delete(Franchise entity)
-        {
-            throw new NotImplementedException();
-        }
 
         public bool Exsist(int id)
         {
             return _dbContext.Franchises.Any(f => f.FranchiseId == id);
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            // Set FranchiseId to null in the Movies table
+            List<Movie> movies = await _dbContext.Movies.Where(m => m.FranchiseId == id).ToListAsync();
+            foreach (Movie movie in movies)
+            {
+                movie.FranchiseId = null;
+                _dbContext.Update(movie);
+            }
+
+            // Remove the franchise
+            Franchise franchise = await GetById(id);
+            _dbContext.Remove(franchise);
+
+            await _dbContext.SaveChangesAsync();
+
         }
     }
 }

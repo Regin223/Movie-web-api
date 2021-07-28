@@ -16,12 +16,12 @@ namespace MovieCharactersAPI.Repositories
         }
         public async Task<IEnumerable<Character>> GetAll()
         {
-            var characters = await _dbContext.Characters.Include(m => m.Movies).ToListAsync();
+            var characters = await _dbContext.Characters.Include(m => m.CharacterMovies).ToListAsync();
             return characters;
         }
         public async Task<Character> GetById(int id)
         {
-            var character = await _dbContext.Characters.Include(m => m.Movies).Where(c => c.CharacterId == id).FirstAsync();
+            var character = await _dbContext.Characters.Include(m => m.CharacterMovies).Where(c => c.CharacterId == id).FirstAsync();
             return character;
         }
 

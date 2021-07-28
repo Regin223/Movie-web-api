@@ -58,7 +58,7 @@ namespace MovieCharactersAPI.Controller
         }
 
         [HttpPost]
-        public async Task<ActionResult<Franchise>> PostCharacter(FranchiseCreateDTO franchiseDto)
+        public async Task<ActionResult<Franchise>> PostFranchise(FranchiseCreateDTO franchiseDto)
         {
 
             Franchise franchise = _mapper.Map<Franchise>(franchiseDto);
@@ -69,6 +69,17 @@ namespace MovieCharactersAPI.Controller
                 new { id = franchise.FranchiseId },
                 _mapper.Map<FranchiseReadDTO>(franchise));
 
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteFranchice(int id)
+        {
+            if (!_repository.Exsist(id))
+            {
+                return NotFound();
+            }
+            await _repository.Delete(id);
+            return NoContent();
         }
 
 

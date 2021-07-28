@@ -8,6 +8,6 @@ namespace MovieCharactersAPI.Repositories
 {
     public interface IMovieRepository : IRepository<Movie>
     {
-        public Task<Character> AddCharacterToMovie(int id);
+        public Task<Movie> AddCharacterToMovie(Character character, int id);
     }
 }

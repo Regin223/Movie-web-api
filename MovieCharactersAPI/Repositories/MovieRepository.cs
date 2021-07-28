@@ -18,12 +18,12 @@ namespace MovieCharactersAPI.Repositories
 
         public async Task<IEnumerable<Movie>> GetAll()
         {
-            return await _dbContext.Movies.Include(m => m.Characters).ToListAsync();
+            return await _dbContext.Movies.Include(m => m.CharacterMovies).ToListAsync();
         }
 
         public async Task<Movie> GetById(int id)
         {
-            return await _dbContext.Movies.Include(c => c.Characters).Where(m => m.MovieId == id).FirstAsync();
+            return await _dbContext.Movies.Include(c => c.CharacterMovies).Where(m => m.MovieId == id).FirstAsync();
         }
 
         public bool Exsist(int id)
@@ -51,17 +51,13 @@ namespace MovieCharactersAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task<Character> AddCharacterToMovie(int id)
+        public async Task<Movie> AddCharacterToMovie(Character character, int id)
         {
-            throw new NotImplementedException();
+            
+            _dbContext.Characters.Add(character);
+            
+
+
         }
-
-
-
-
-
-
-
-
     }
 }

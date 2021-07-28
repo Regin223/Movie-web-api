@@ -29,7 +29,7 @@ namespace MovieCharactersAPI.Model
         [MaxLength(2083)]
         public string Picture { get; set; }
 
-        public ICollection<Movie> Movies { get; set; }
+        public ICollection<CharacterMovie> CharacterMovies { get; set; }
 
     }
 }

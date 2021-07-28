@@ -30,7 +30,7 @@ namespace MovieCharactersAPI.Model
         [MaxLength(2083)]
         public string Trailer { get; set; }
 
-        public ICollection<Character> Characters { get; set; }
+        public ICollection<CharacterMovie> CharacterMovies { get; set; }
 
         public int? FranchiseId { get; set; }
 
