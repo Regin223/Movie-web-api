@@ -34,9 +34,11 @@ namespace MovieCharactersAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task<Franchise> Create(Franchise entity)
+        public async Task<Franchise> Create(Franchise entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Franchises.Add(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
         }
 
         public Task Delete(Franchise entity)

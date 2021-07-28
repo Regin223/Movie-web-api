@@ -18,7 +18,7 @@ namespace MovieCharactersAPI.Profiles
 
             CreateMap<FranchiseEditDTO, Franchise>();
 
-            //CreateMap<FranchiseCreateDTO, Franchise>();
+            CreateMap<FranchiseCreateDTO, Franchise>();
         }
 
     }

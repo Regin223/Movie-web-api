@@ -57,7 +57,19 @@ namespace MovieCharactersAPI.Controller
 
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Franchise>> PostCharacter(FranchiseCreateDTO franchiseDto)
+        {
 
+            Franchise franchise = _mapper.Map<Franchise>(franchiseDto);
+
+            franchise = await _repository.Create(franchise);
+
+            return CreatedAtAction("GetById",
+                new { id = franchise.FranchiseId },
+                _mapper.Map<FranchiseReadDTO>(franchise));
+
+        }
 
 
 
