@@ -75,6 +75,19 @@ namespace MovieCharactersAPI.Controller
 
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCharacter(int id)
+        {
+            if (!_repository.Exsist(id))
+            {
+                return NotFound();
+            }
+
+            await _repository.Delete(id);
+
+            return NoContent();
+        }
+
 
 
 

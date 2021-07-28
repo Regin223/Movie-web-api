@@ -21,6 +21,6 @@ namespace MovieCharactersAPI.Repositories
 
         public Task Update(T entity);
 
-        public Task Delete(T entity);
+        public Task Delete(int id);
     }
 }

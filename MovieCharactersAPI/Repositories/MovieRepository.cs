@@ -15,27 +15,6 @@ namespace MovieCharactersAPI.Repositories
         {
             _dbContext = conext;
         }
-        public Task<Character> AddCharacterToMovie(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Movie> Create(Movie entity)
-        {
-            _dbContext.Movies.Add(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
-        }
-
-        public Task Delete(Movie entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Exsist(int id)
-        {
-            return _dbContext.Movies.Any(m => m.MovieId == id);
-        }
 
         public async Task<IEnumerable<Movie>> GetAll()
         {
@@ -47,10 +26,42 @@ namespace MovieCharactersAPI.Repositories
             return await _dbContext.Movies.Include(c => c.Characters).Where(m => m.MovieId == id).FirstAsync();
         }
 
+        public bool Exsist(int id)
+        {
+            return _dbContext.Movies.Any(m => m.MovieId == id);
+        }
+
         public async Task Update(Movie entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<Movie> Create(Movie entity)
+        {
+            _dbContext.Movies.Add(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task Delete(int id)
+        {
+            var movie = await _dbContext.Movies.FindAsync(id);
+            _dbContext.Movies.Remove(movie);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public Task<Character> AddCharacterToMovie(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+
+
+
+
     }
 }

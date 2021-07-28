@@ -75,5 +75,18 @@ namespace MovieCharactersAPI.Controller
                 _mapper.Map<MovieReadDTO>(movie));
 
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMovie(int id)
+        {
+            if (!_repository.Exsist(id))
+            {
+                return NotFound();
+            }
+
+            await _repository.Delete(id);
+
+            return NoContent();
+        }
     }
 }

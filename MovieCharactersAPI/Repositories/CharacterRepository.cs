@@ -42,9 +42,11 @@ namespace MovieCharactersAPI.Repositories
             return entity;
         }
 
-        public Task Delete(Character entity)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            var character = await _dbContext.Characters.FindAsync(id);
+            _dbContext.Characters.Remove(character);
+            await _dbContext.SaveChangesAsync();
         }
        
 
