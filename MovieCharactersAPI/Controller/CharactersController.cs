@@ -72,8 +72,9 @@ namespace MovieCharactersAPI.Controller
             return CreatedAtAction("GetById",
                 new { id = character.CharacterId }, 
                 _mapper.Map<CharacterReadDTO>(character));
-
         }
+
+        
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCharacter(int id)
