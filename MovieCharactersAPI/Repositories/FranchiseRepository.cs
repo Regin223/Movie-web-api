@@ -91,5 +91,14 @@ namespace MovieCharactersAPI.Repositories
         {
             return await _dbContext.Movies.Where(m => m.FranchiseId == franchiseId).ToListAsync();
         }
+
+        public async Task<IEnumerable<Character>> GetCharacters(int franchiseId)
+        {
+            List<int> moviesIds = await _dbContext.Movies.Where(f => f.FranchiseId == franchiseId).Select(m => m.MovieId).ToListAsync();
+            List<int> characterIds = await _dbContext.CharacterMovies.Where(cm => moviesIds.Contains(cm.MovieId)).Select(cm => cm.CharacterId).ToListAsync();
+            List<Character> characters = await _dbContext.Characters.Where(c => characterIds.Contains(c.CharacterId)).ToListAsync();
+            return characters;
+
+        }
     }
 }

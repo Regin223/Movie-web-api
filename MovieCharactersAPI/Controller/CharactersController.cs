@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MovieCharactersAPI.Repositories;
 using MovieCharactersAPI.Model;
 using MovieCharactersAPI.Model.DTO.Character;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using System.Net.Mime;
 
 namespace MovieCharactersAPI.Controller
 {
-    [Route("api/characters")]
+    [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class CharactersController : ControllerBase
     {
         private readonly IRepository<Character> _repository;
@@ -42,7 +44,7 @@ namespace MovieCharactersAPI.Controller
             return _mapper.Map<CharacterReadDTO>(character);
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> PutCharacter(int id,CharacterEditDTO characterDto)
         {
 
@@ -56,8 +58,16 @@ namespace MovieCharactersAPI.Controller
             }
 
             Character character = _mapper.Map<Character>(characterDto);
-            await _repository.Update(character);
+            try
+            {
+                await _repository.Update(character);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
 
+                throw;
+            }
+          
             return NoContent();
         }
 
@@ -67,14 +77,19 @@ namespace MovieCharactersAPI.Controller
 
             Character character = _mapper.Map<Character>(characterDto);
 
-            character = await _repository.Create(character);
-
+            try
+            {
+                character = await _repository.Create(character);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            
             return CreatedAtAction("GetById",
                 new { id = character.CharacterId }, 
                 _mapper.Map<CharacterReadDTO>(character));
         }
-
-        
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCharacter(int id)
@@ -88,11 +103,5 @@ namespace MovieCharactersAPI.Controller
 
             return NoContent();
         }
-
-
-
-
-
-        
     }
 }

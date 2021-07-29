@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using MovieCharactersAPI.Model;
 using Microsoft.EntityFrameworkCore;
 using MovieCharactersAPI.Repositories;
+using System.Reflection;
+using System.IO;
 
 namespace MovieCharactersAPI
 {
@@ -34,6 +36,9 @@ namespace MovieCharactersAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieCharactersAPI", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
             services.AddDbContext<MovieCharacterDbContext>(option => 
                 option.UseSqlServer(Configuration.GetConnectionString("DefultConnection")));
@@ -41,6 +46,7 @@ namespace MovieCharactersAPI
             services.AddScoped(typeof(IRepository<Character>), typeof(CharacterRepository));
             services.AddScoped(typeof(IMovieRepository), typeof(MovieRepository));
             services.AddScoped(typeof(IFranchiseRepository), typeof(FranchiseRepository));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

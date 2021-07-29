@@ -1,18 +1,21 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MovieCharactersAPI.Model;
 using MovieCharactersAPI.Model.DTO.Character;
 using MovieCharactersAPI.Model.DTO.Movie;
 using MovieCharactersAPI.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Controller
 {
-    [Route("api/movies")]
+    [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class MovieController : ControllerBase
     {
         private readonly IMovieRepository _repository;
@@ -25,13 +28,23 @@ namespace MovieCharactersAPI.Controller
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IEnumerable<MovieReadDTO>> GetAll()
         {
             var movies = await _repository.GetAll();
             return _mapper.Map<List<MovieReadDTO>>(movies);
         }
 
+        /// <summary>
+        /// Get a specific movie by it's Id
+        /// </summary>
+        /// <param name="id">The id of the specific movie</param>
+        /// <returns>A Movie</returns>
+        /// <response code="200">Movie was found</response>
+        /// <response code="404">Movie not found</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MovieReadDTO>> GetById(int id)
         {
             if (!_repository.Exsist(id))
@@ -40,10 +53,10 @@ namespace MovieCharactersAPI.Controller
             }
             var movie = await _repository.GetById(id);
 
-            return _mapper.Map<MovieReadDTO>(movie);
+            return Ok(_mapper.Map<MovieReadDTO>(movie));
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> PutMovie(int id, MovieEditDTO movieDTO)
         {
 
@@ -68,12 +81,19 @@ namespace MovieCharactersAPI.Controller
 
             Movie movie = _mapper.Map<Movie>(movieDTO);
 
-            movie = await _repository.Create(movie);
+            try
+            {
+                movie = await _repository.Create(movie);
+            }
+            catch 
+            {
+                return BadRequest();
+            }
+            
 
             return base.CreatedAtAction("GetById",
                 new { id = movie.MovieId },
                 _mapper.Map<MovieReadDTO>(movie));
-
         }
 
         [HttpDelete("{id}")]
@@ -90,22 +110,30 @@ namespace MovieCharactersAPI.Controller
         }
 
         [HttpPost]
-        [Route("/createCharaterToMovie")]
+        [Route("createCharater")]
         public async Task<ActionResult<MovieReadDTO>> CreateCharacterAddToMovie(CharacterCreateDTO characterDTO, int movieId)
         {
             if (!_repository.Exsist(movieId))
             {
                 return NotFound();
             }
-
+            Movie movie = null;
             Character character = _mapper.Map<Character>(characterDTO);
-            Movie movie = await _repository.AddCharacterToMovie(character, movieId);
+            try
+            {
+                movie = await _repository.AddCharacterToMovie(character, movieId);
+            }
+            catch (DbUpdateConcurrencyException) 
+            {
+                return BadRequest();
+            }
+            
 
             return _mapper.Map<MovieReadDTO>(movie);
         }
 
         [HttpPut]
-        [Route("/removeCharaterFromMovie")]
+        [Route("removeCharater")]
         public async Task<ActionResult> RemoveCharacterFromMovie(int movieId, int characterId)
         {
 
@@ -114,14 +142,22 @@ namespace MovieCharactersAPI.Controller
             {
                 return BadRequest();
             }
-            await _repository.RemoveCharacterFromMovie(characterMovie);
+
+            try
+            {
+                await _repository.RemoveCharacterFromMovie(characterMovie);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+           
 
             return NoContent(); 
-         
         }
 
         [HttpGet]
-        [Route("/getCharacters")]
+        [Route("getCharacters")]
         public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharacters(int id)
         {
             if (!_repository.Exsist(id))
@@ -131,7 +167,5 @@ namespace MovieCharactersAPI.Controller
             IEnumerable<Character> characters = await _repository.GetCharacters(id);
             return _mapper.Map<List<CharacterReadDTO>>(characters);
         }
-     
-
     }
 }
