@@ -9,5 +9,7 @@ namespace MovieCharactersAPI.Repositories
     public interface IMovieRepository : IRepository<Movie>
     {
         public Task<Movie> AddCharacterToMovie(Character character, int id);
+        public Task RemoveCharacterFromMovie(CharacterMovie characterMovie);
+        public Task<CharacterMovie> GetLinkingTable(int characterId, int movieId);
     }
 }

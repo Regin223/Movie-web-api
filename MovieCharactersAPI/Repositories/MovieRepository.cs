@@ -53,10 +53,25 @@ namespace MovieCharactersAPI.Repositories
 
         public async Task<Movie> AddCharacterToMovie(Character character, int id)
         {
-            
             _dbContext.Characters.Add(character);
-            
+            await _dbContext.SaveChangesAsync();
+            Character addedCharacter = _dbContext.Characters.OrderBy(i => i.CharacterId).Last();
+            CharacterMovie characterMovie = new CharacterMovie() { CharacterId = addedCharacter.CharacterId, MovieId = id };
+            _dbContext.CharacterMovies.Add(characterMovie);
+            await _dbContext.SaveChangesAsync();
+            return await GetById(id);
+        }
 
+        public async Task<CharacterMovie> GetLinkingTable(int movieId, int characterId)
+        {
+            CharacterMovie characterMovie = await _dbContext.CharacterMovies.FindAsync(movieId,characterId);
+            return characterMovie;
+        }
+        public async Task RemoveCharacterFromMovie(CharacterMovie characterMovie)
+        {
+        
+            _dbContext.CharacterMovies.Remove(characterMovie);
+            await _dbContext.SaveChangesAsync();
 
         }
     }

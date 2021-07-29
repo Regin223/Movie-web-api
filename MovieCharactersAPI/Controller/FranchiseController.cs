@@ -82,6 +82,19 @@ namespace MovieCharactersAPI.Controller
             return NoContent();
         }
 
+        [HttpDelete]
+        [Route("/removeMovieFromFranchise")]
+        public async Task<ActionResult> RemoveMovieFromFranchise(int franchiseId, int movieId)
+        {
+            
+            if (!_repository.Exsist(franchiseId))
+            {
+                return NotFound();
+            }
+            await _repository.RemoveMovieFromFranchise(franchiseId, movieId);
+
+            return NoContent();
+        }
 
 
     }

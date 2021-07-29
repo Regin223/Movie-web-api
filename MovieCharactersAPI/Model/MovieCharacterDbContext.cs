@@ -20,7 +20,7 @@ namespace MovieCharactersAPI.Model
         public DbSet<Character> Characters { get; set; }
         public DbSet<Franchise> Franchises { get; set; }
         public DbSet<Movie> Movies { get; set; }
-        public DbSet<CharacterMovie> CharacterMovies{ get; set; }
+        public DbSet<CharacterMovie> CharacterMovies { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,6 +29,7 @@ namespace MovieCharactersAPI.Model
             modelBuilder.Entity<Movie>().HasData(SeederHelper.SeedMovieHelper());
             modelBuilder.Entity<Franchise>().HasData(SeederHelper.SeedFranchiseHelper());
             modelBuilder.Entity<CharacterMovie>().HasKey(cm => new { cm.MovieId, cm.CharacterId });
+            modelBuilder.Entity<CharacterMovie>().HasData(SeederHelper.CharacterMovies());
 
         }
     }

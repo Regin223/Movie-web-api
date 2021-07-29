@@ -92,7 +92,7 @@ namespace MovieCharactersAPI.Controller
 
         [HttpPost]
         [Route("/createCharaterToMovie")]
-        public async Task<ActionResult<MovieReadDTO>> CreateCharacterAddToMovie(CharacterReadDTO characterDTO, int movieId)
+        public async Task<ActionResult<MovieReadDTO>> CreateCharacterAddToMovie(CharacterCreateDTO characterDTO, int movieId)
         {
             if (!_repository.Exsist(movieId))
             {
@@ -101,7 +101,26 @@ namespace MovieCharactersAPI.Controller
 
             Character character = _mapper.Map<Character>(characterDTO);
             Movie movie = await _repository.AddCharacterToMovie(character, movieId);
+
+            return _mapper.Map<MovieReadDTO>(movie);
         }
+
+        [HttpPut]
+        [Route("/removeCharaterFromMovie")]
+        public async Task<ActionResult> RemoveCharacterFromMovie(int movieId, int characterId)
+        {
+
+            CharacterMovie characterMovie = await _repository.GetLinkingTable(movieId, characterId);
+            if(characterMovie == null)
+            {
+                return BadRequest();
+            }
+            await _repository.RemoveCharacterFromMovie(characterMovie);
+
+            return NoContent(); 
+         
+        }
+     
 
     }
 }

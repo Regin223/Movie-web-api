@@ -64,5 +64,19 @@ namespace MovieCharactersAPI.Repositories
             await _dbContext.SaveChangesAsync();
 
         }
+
+        public async Task RemoveMovieFromFranchise(int franchiseId, int movieId)
+        {
+            var movies = await _dbContext.Franchises.Where(fId => fId.FranchiseId == franchiseId).SelectMany(m => m.Movies).ToListAsync();
+            foreach(Movie movie in movies)
+            {
+                if (movie.MovieId == movieId)
+                {
+                    movie.FranchiseId = null;
+                    _dbContext.Movies.Update(movie);
+                }
+            }
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

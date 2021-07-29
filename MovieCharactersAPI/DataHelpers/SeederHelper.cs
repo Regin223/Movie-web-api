@@ -123,6 +123,40 @@ namespace MovieCharactersAPI.DataHelpers
             };
             return movies;
         }
+        
+        public static List<CharacterMovie> CharacterMovies()
+        {
+            List<CharacterMovie> characterMovies = new List<CharacterMovie>()
+            {
+                new CharacterMovie()
+                {
+                    CharacterId = 4,
+                    MovieId = 2,
+                },
+                 new CharacterMovie()
+                {
+                    CharacterId = 4,
+                    MovieId = 3,
+                },
+                new CharacterMovie()
+                {
+                    CharacterId = 1,
+                    MovieId = 1,
+                },
+                new CharacterMovie()
+                {
+                    CharacterId = 2,
+                    MovieId = 1,
+                },
+                 new CharacterMovie()
+                {
+                    CharacterId = 3,
+                    MovieId = 2,
+                },
+            };
+
+            return characterMovies;
+        }
 
     }
 }
