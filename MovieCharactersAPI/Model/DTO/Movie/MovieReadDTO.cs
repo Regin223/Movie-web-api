@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Model.DTO.Movie
 {
+    /// <summary>
+    /// Class <c>MovieReadDTO</c> represent the model for a MovieReadDTO with necessary properties. 
+    /// Used when returning a movie to the user instead of returning the actual movie. 
+    /// </summary>
     public class MovieReadDTO
     {
         public string MovieTitle { get; set; }

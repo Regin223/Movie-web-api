@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Repositories
 {
+    /// <summary>
+    /// Class <c>MovieRepository</c> is the repository for movies. 
+    /// The repository is responsible for the communication with the database.
+    /// Inherits from IMovieRepository
+    /// </summary>
     public class MovieRepository : IMovieRepository
     {
         private readonly MovieCharacterDbContext _dbContext;

@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Model.DTO.Character
 {
+    /// <summary>
+    /// Class <c>CharacterCreateDTO</c> represent the model for a CharacterCharacterDTO with necessary properties. 
+    /// Used when returning a character to the user instead of returning the actual character. 
+    /// </summary>
     public class CharacterReadDTO
     {
         public int CharacterId { get; set; }
