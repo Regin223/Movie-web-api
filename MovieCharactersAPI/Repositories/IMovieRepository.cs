@@ -11,5 +11,6 @@ namespace MovieCharactersAPI.Repositories
         public Task<Movie> AddCharacterToMovie(Character character, int id);
         public Task RemoveCharacterFromMovie(CharacterMovie characterMovie);
         public Task<CharacterMovie> GetLinkingTable(int characterId, int movieId);
+        public Task<IEnumerable<Character>> GetCharacters(int movieId);
     }
 }

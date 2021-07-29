@@ -36,7 +36,7 @@ namespace MovieCharactersAPI.Repositories
 
         public async Task<Franchise> Create(Franchise entity)
         {
-            _dbContext.Franchises.Add(entity);
+            await _dbContext.Franchises.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
             return entity;
         }
@@ -45,6 +45,14 @@ namespace MovieCharactersAPI.Repositories
         public bool Exsist(int id)
         {
             return _dbContext.Franchises.Any(f => f.FranchiseId == id);
+        }
+
+        public async Task AddMovie(Movie movie, int franchiseId)
+        {
+            // Create and add movie
+            movie.FranchiseId = franchiseId;
+            await _dbContext.Movies.AddAsync(movie);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
@@ -65,7 +73,7 @@ namespace MovieCharactersAPI.Repositories
 
         }
 
-        public async Task RemoveMovieFromFranchise(int franchiseId, int movieId)
+        public async Task RemoveMovie(int franchiseId, int movieId)
         {
             var movies = await _dbContext.Franchises.Where(fId => fId.FranchiseId == franchiseId).SelectMany(m => m.Movies).ToListAsync();
             foreach(Movie movie in movies)
@@ -77,6 +85,11 @@ namespace MovieCharactersAPI.Repositories
                 }
             }
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Movie>> GetMovies(int franchiseId)
+        {
+            return await _dbContext.Movies.Where(m => m.FranchiseId == franchiseId).ToListAsync();
         }
     }
 }

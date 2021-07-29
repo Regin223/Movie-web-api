@@ -9,7 +9,9 @@ namespace MovieCharactersAPI.Repositories
     public interface IFranchiseRepository : IRepository<Franchise>
     {
 
-        public Task RemoveMovieFromFranchise(int franchiseId, int movieId);
+        public Task RemoveMovie(int franchiseId, int movieId);
+        public Task AddMovie(Movie movie, int franchiseId);
+        public Task<IEnumerable<Movie>> GetMovies(int franchiseId);
 
     }
 }

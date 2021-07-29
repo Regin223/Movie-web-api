@@ -34,12 +34,11 @@ namespace MovieCharactersAPI.Controller
         [HttpGet("{id}")]
         public async Task<ActionResult<MovieReadDTO>> GetById(int id)
         {
-            var movie = await _repository.GetById(id);
-
-            if (movie == null)
+            if (!_repository.Exsist(id))
             {
                 return NotFound();
             }
+            var movie = await _repository.GetById(id);
 
             return _mapper.Map<MovieReadDTO>(movie);
         }
@@ -71,7 +70,7 @@ namespace MovieCharactersAPI.Controller
 
             movie = await _repository.Create(movie);
 
-            return CreatedAtAction("GetById",
+            return base.CreatedAtAction("GetById",
                 new { id = movie.MovieId },
                 _mapper.Map<MovieReadDTO>(movie));
 
@@ -119,6 +118,18 @@ namespace MovieCharactersAPI.Controller
 
             return NoContent(); 
          
+        }
+
+        [HttpGet]
+        [Route("/getCharacters")]
+        public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharacters(int id)
+        {
+            if (!_repository.Exsist(id))
+            {
+                return NotFound();
+            }
+            IEnumerable<Character> characters = await _repository.GetCharacters(id);
+            return _mapper.Map<List<CharacterReadDTO>>(characters);
         }
      
 

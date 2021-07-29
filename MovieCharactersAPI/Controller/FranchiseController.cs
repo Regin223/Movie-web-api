@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieCharactersAPI.Model;
 using MovieCharactersAPI.Model.DTO.Franchise;
+using MovieCharactersAPI.Model.DTO.Movie;
 using MovieCharactersAPI.Repositories;
 using System;
 using System.Collections.Generic;
@@ -33,11 +34,11 @@ namespace MovieCharactersAPI.Controller
         [HttpGet("{id}")]
         public async Task<ActionResult<FranchiseReadDTO>> GetById(int id)
         {
-            var franchise = await _repository.GetById(id);
-            if(franchise == null)
+            if(!_repository.Exsist(id))
             {
                 return NotFound();
             }
+            var franchise = await _repository.GetById(id);
             return _mapper.Map<FranchiseReadDTO>(franchise);
         }
         [HttpPut("id")]
@@ -82,18 +83,46 @@ namespace MovieCharactersAPI.Controller
             return NoContent();
         }
 
+        [HttpPut]
+        [Route("/addMovie")]
+        public async Task<ActionResult> AddMovie(MovieCreateDTO movieDTO, int franchiseId)
+        {
+            if (!_repository.Exsist(franchiseId))
+            {
+                return NotFound();
+            }
+            Movie movie = _mapper.Map<Movie>(movieDTO);
+            await _repository.AddMovie(movie, franchiseId);
+
+            return Ok($"{movie.MovieTitle} was added to the franchise with the id {franchiseId}");
+        }
+
         [HttpDelete]
-        [Route("/removeMovieFromFranchise")]
-        public async Task<ActionResult> RemoveMovieFromFranchise(int franchiseId, int movieId)
+        [Route("/removeMovie")]
+        public async Task<ActionResult> RemoveMovie(int franchiseId, int movieId)
         {
             
             if (!_repository.Exsist(franchiseId))
             {
                 return NotFound();
             }
-            await _repository.RemoveMovieFromFranchise(franchiseId, movieId);
+            await _repository.RemoveMovie(franchiseId, movieId);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("/GetMovies")]
+        public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMovies(int id)
+        {
+            if (!_repository.Exsist(id))
+            {
+                return NotFound();
+            }
+            IEnumerable<Movie> movies = await _repository.GetMovies(id);
+
+            return _mapper.Map <List<MovieReadDTO>>(movies);
+
         }
 
 

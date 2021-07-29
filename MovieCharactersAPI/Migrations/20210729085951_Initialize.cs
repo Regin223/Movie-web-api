@@ -2,7 +2,7 @@
 
 namespace MovieCharactersAPI.Migrations
 {
-    public partial class InitialDb : Migration
+    public partial class Initialize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -118,6 +118,18 @@ namespace MovieCharactersAPI.Migrations
                 table: "Movies",
                 columns: new[] { "MovieId", "Director", "FranchiseId", "Genre", "MovieTitle", "ReleaseYear", "Trailer" },
                 values: new object[] { 3, "Peter Jackson", 2, "Adventure", "The Two Towers", 2002, "https://www.youtube.com/watch?v=LbfMDwc4azU" });
+
+            migrationBuilder.InsertData(
+                table: "CharacterMovies",
+                columns: new[] { "CharacterId", "MovieId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 1 },
+                    { 4, 2 },
+                    { 3, 2 },
+                    { 4, 3 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CharacterMovies_CharacterId",

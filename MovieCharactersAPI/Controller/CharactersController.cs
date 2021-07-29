@@ -32,12 +32,12 @@ namespace MovieCharactersAPI.Controller
         [HttpGet("{id}")]
         public async Task<ActionResult<CharacterReadDTO>> GetById(int id)
         {
-            var character = await _repository.GetById(id);
-  
-            if(character == null)
+            if(!_repository.Exsist(id))
             {
                 return NotFound();
-            } 
+            }
+
+            var character = await _repository.GetById(id);
 
             return _mapper.Map<CharacterReadDTO>(character);
         }
