@@ -47,6 +47,18 @@ namespace MovieCharactersAPI.Repositories
             return _dbContext.Franchises.Any(f => f.FranchiseId == id);
         }
 
+        public async Task AddMovie(int movieId, int franciseId)
+        {
+            if(!_dbContext.Movies.Any(m => m.MovieId == movieId))
+            {
+                throw new Exception();
+            }
+            Movie movie = await _dbContext.Movies.FindAsync(movieId);
+            movie.FranchiseId = franciseId;
+            _dbContext.Update(movie);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task AddMovie(Movie movie, int franchiseId)
         {
             // Create and add movie

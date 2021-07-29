@@ -109,6 +109,31 @@ namespace MovieCharactersAPI.Controller
             return NoContent();
         }
 
+        [HttpPut]
+        [Route("addCharacter")]
+        public async Task<ActionResult> AddCharacterToMovie(int movieId, int characterId)
+        {
+            if (!_repository.Exsist(movieId))
+            {
+                return NotFound("The movie do not exist");
+            }
+
+            try
+            {
+                 await _repository.AddCharacterToMovie(characterId, movieId);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            catch
+            {
+                return NotFound("The character do not exist");
+            }
+
+            return NoContent();
+        }
+
         [HttpPost]
         [Route("createCharater")]
         public async Task<ActionResult<MovieReadDTO>> CreateCharacterAddToMovie(CharacterCreateDTO characterDTO, int movieId)

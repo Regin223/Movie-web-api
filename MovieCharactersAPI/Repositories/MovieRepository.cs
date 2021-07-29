@@ -51,6 +51,21 @@ namespace MovieCharactersAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task AddCharacterToMovie(int characterId, int movieId)
+        {
+            if(!_dbContext.Characters.Any(c => c.CharacterId == characterId))
+            {
+                throw new Exception();
+            }
+            CharacterMovie characterMovie = new CharacterMovie()
+            {
+                CharacterId = characterId,
+                MovieId = movieId
+            };
+            _dbContext.CharacterMovies.Add(characterMovie);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<Movie> AddCharacterToMovie(Character character, int id)
         {
             _dbContext.Characters.Add(character);

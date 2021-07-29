@@ -103,7 +103,32 @@ namespace MovieCharactersAPI.Controller
 
         [HttpPut]
         [Route("addMovie")]
-        public async Task<ActionResult> AddMovie(MovieCreateDTO movieDTO, int franchiseId)
+        public async Task<ActionResult> AddMovieToFranchise(int movieId, int franchiseId)
+        {
+            if (!_repository.Exsist(franchiseId))
+            {
+                return NotFound("Franchise do not exsist");
+            }
+
+            try
+            {
+                await _repository.AddMovie(movieId, franchiseId);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                throw;
+            }
+            catch
+            {
+                throw;
+            }
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("createMovie")]
+        public async Task<ActionResult> CreateMovieAddToFranchise(MovieCreateDTO movieDTO, int franchiseId)
         {
             if (!_repository.Exsist(franchiseId))
             {
