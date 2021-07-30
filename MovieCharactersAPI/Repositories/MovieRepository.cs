@@ -47,7 +47,7 @@ namespace MovieCharactersAPI.Repositories
         /// </summary>
         /// <param name="id">movie id</param>
         /// <returns>A bool</returns>
-        public bool Exsist(int id)
+        public bool Exist(int id)
         {
             return _dbContext.Movies.Any(m => m.MovieId == id);
         }

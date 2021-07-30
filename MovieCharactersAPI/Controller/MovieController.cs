@@ -71,7 +71,7 @@ namespace MovieCharactersAPI.Controller
         /// <param name="movieDTO">Data to update</param>
         /// <returns></returns>
         /// <response code="204">Movie was updated</response>
-        /// <response code="400">Ids not matching</response>
+        /// <response code="400">Ids not matching or franchise not existing</response>
         /// <response code="404">Movie not found</response>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -89,7 +89,14 @@ namespace MovieCharactersAPI.Controller
             }
 
             Movie movie = _mapper.Map<Movie>(movieDTO);
-            await _repository.Update(movie);
+            try
+            {
+                await _repository.Update(movie);
+            }
+            catch 
+            {
+                return BadRequest("Check franchise id");
+            }
 
             return NoContent();
         }
@@ -150,7 +157,8 @@ namespace MovieCharactersAPI.Controller
         /// <param name="characterId">The character id</param>
         /// <returns></returns>
         /// <response code="204">The character was added</response>
-        /// <response code="404">The movie or character do not exist</response>
+        /// <response code="404">The movie do not exist</response>
+        /// <response code="400">The character already exist</response>
         [HttpPut]
         [Route("addCharacter")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -172,7 +180,7 @@ namespace MovieCharactersAPI.Controller
             }
             catch
             {
-                return NotFound($"A character with the id: {characterId} was not found");
+                return BadRequest($"A character with the id: {characterId} already exist");
             }
 
             return NoContent();

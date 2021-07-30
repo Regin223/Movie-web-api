@@ -47,6 +47,7 @@ namespace MovieCharactersAPI.Controller
         /// <param name="id">The id for the character</param>
         /// <returns>The requested character</returns>
         /// <response code="200">The character was successfully retrived</response>
+        /// <response code="404">The character was not found</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,7 +55,7 @@ namespace MovieCharactersAPI.Controller
         {
             if(!_repository.Exist(id))
             {
-                return NotFound();
+                return NotFound($"A character with the id: {id} was not found");
             }
 
             var character = await _repository.GetById(id);
@@ -84,7 +85,7 @@ namespace MovieCharactersAPI.Controller
             }
             if (!_repository.Exist(id))
             {
-                return NotFound();
+                return NotFound($"A character with the id: {id} was not found");
             }
 
             Character character = _mapper.Map<Character>(characterDto);
@@ -144,7 +145,7 @@ namespace MovieCharactersAPI.Controller
         {
             if (!_repository.Exist(id))
             {
-                return NotFound();
+                return NotFound($"A character with the id: {id} was not found");
             }
 
             await _repository.Delete(id);

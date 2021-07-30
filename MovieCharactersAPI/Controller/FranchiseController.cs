@@ -228,7 +228,7 @@ namespace MovieCharactersAPI.Controller
         /// <returns></returns>
         /// <response code="404">The the franchise was not found</response>
         /// <response code="204">The movie was removed</response>
-        [HttpDelete]
+        [HttpPut]
         [Route("removeMovie")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
