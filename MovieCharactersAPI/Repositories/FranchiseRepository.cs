@@ -157,7 +157,7 @@ namespace MovieCharactersAPI.Repositories
         /// <returns>A List of movies</returns>
         public async Task<IEnumerable<Movie>> GetMovies(int franchiseId)
         {
-            return await _dbContext.Movies.Where(m => m.FranchiseId == franchiseId).ToListAsync();
+            return await _dbContext.Movies.Include(m => m.CharacterMovies).Where(m => m.FranchiseId == franchiseId).ToListAsync();
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace MovieCharactersAPI.Repositories
         {
             List<int> moviesIds = await _dbContext.Movies.Where(f => f.FranchiseId == franchiseId).Select(m => m.MovieId).ToListAsync();
             List<int> characterIds = await _dbContext.CharacterMovies.Where(cm => moviesIds.Contains(cm.MovieId)).Select(cm => cm.CharacterId).ToListAsync();
-            List<Character> characters = await _dbContext.Characters.Where(c => characterIds.Contains(c.CharacterId)).ToListAsync();
+            List<Character> characters = await _dbContext.Characters.Include(c => c.CharacterMovies).Where(c => characterIds.Contains(c.CharacterId)).ToListAsync();
             return characters;
         }
     }

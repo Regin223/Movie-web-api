@@ -47,7 +47,7 @@ namespace MovieCharactersAPI.Repositories
         /// </summary>
         /// <param name="id">movie id</param>
         /// <returns>A bool</returns>
-        public bool Exsist(int id)
+        public bool Exist(int id)
         {
             return _dbContext.Movies.Any(m => m.MovieId == id);
         }
@@ -157,7 +157,7 @@ namespace MovieCharactersAPI.Repositories
         public async Task<IEnumerable<Character>> GetCharacters(int movieId)
         {
             List<int> characterIds = await _dbContext.CharacterMovies.Where(cm => cm.MovieId == movieId).Select(c => c.CharacterId).ToListAsync();
-            List<Character> characters = await _dbContext.Characters.Where(c => characterIds.Contains(c.CharacterId)).ToListAsync();
+            List<Character> characters = await _dbContext.Characters.Include(c => c.CharacterMovies).Where(c => characterIds.Contains(c.CharacterId)).ToListAsync();
             return characters;
         }
     }
