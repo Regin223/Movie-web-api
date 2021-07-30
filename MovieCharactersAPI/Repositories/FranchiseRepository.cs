@@ -42,7 +42,7 @@ namespace MovieCharactersAPI.Repositories
         }
 
 
-        public bool Exsist(int id)
+        public bool Exist(int id)
         {
             return _dbContext.Franchises.Any(f => f.FranchiseId == id);
         }

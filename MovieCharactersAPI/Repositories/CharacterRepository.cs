@@ -25,7 +25,7 @@ namespace MovieCharactersAPI.Repositories
             return character;
         }
 
-        public bool Exsist(int id)
+        public bool Exist(int id)
         {
             return _dbContext.Characters.Any(c => c.CharacterId == id);
         }

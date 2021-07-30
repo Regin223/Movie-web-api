@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Controller
 {
+    /// <summary>
+    /// Class <c>FranchiseController</c> inherit ControllerBase for an MVC Controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
@@ -37,7 +40,7 @@ namespace MovieCharactersAPI.Controller
         [HttpGet("{id}")]
         public async Task<ActionResult<FranchiseReadDTO>> GetById(int id)
         {
-            if(!_repository.Exsist(id))
+            if(!_repository.Exist(id))
             {
                 return NotFound();
             }
@@ -51,7 +54,7 @@ namespace MovieCharactersAPI.Controller
             {
                 return BadRequest();
             }
-            if (!_repository.Exsist(id))
+            if (!_repository.Exist(id))
             {
                 return NotFound();
             }
@@ -93,7 +96,7 @@ namespace MovieCharactersAPI.Controller
         [HttpDelete]
         public async Task<ActionResult> DeleteFranchice(int id)
         {
-            if (!_repository.Exsist(id))
+            if (!_repository.Exist(id))
             {
                 return NotFound();
             }
@@ -105,7 +108,7 @@ namespace MovieCharactersAPI.Controller
         [Route("addMovie")]
         public async Task<ActionResult> AddMovieToFranchise(int movieId, int franchiseId)
         {
-            if (!_repository.Exsist(franchiseId))
+            if (!_repository.Exist(franchiseId))
             {
                 return NotFound("Franchise do not exsist");
             }
@@ -130,7 +133,7 @@ namespace MovieCharactersAPI.Controller
         [Route("createMovie")]
         public async Task<ActionResult> CreateMovieAddToFranchise(MovieCreateDTO movieDTO, int franchiseId)
         {
-            if (!_repository.Exsist(franchiseId))
+            if (!_repository.Exist(franchiseId))
             {
                 return NotFound();
             }
@@ -153,7 +156,7 @@ namespace MovieCharactersAPI.Controller
         public async Task<ActionResult> RemoveMovie(int franchiseId, int movieId)
         {
             
-            if (!_repository.Exsist(franchiseId))
+            if (!_repository.Exist(franchiseId))
             {
                 return NotFound();
             }
@@ -166,7 +169,7 @@ namespace MovieCharactersAPI.Controller
         [Route("getMovies")]
         public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMovies(int id)
         {
-            if (!_repository.Exsist(id))
+            if (!_repository.Exist(id))
             {
                 return NotFound();
             }
@@ -179,7 +182,7 @@ namespace MovieCharactersAPI.Controller
         [Route("getCharacters")]
         public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharacters(int id)
         {
-            if (!_repository.Exsist(id))
+            if (!_repository.Exist(id))
             {
                 return NotFound();
             }

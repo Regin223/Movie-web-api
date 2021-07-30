@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Controller
 {
+    /// <summary>
+    /// Class <c>MovieController</c> inherit ControllerBase for an MVC Controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
@@ -27,6 +30,11 @@ namespace MovieCharactersAPI.Controller
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all movies
+        /// </summary>
+        /// <returns>All movies</returns>
+        /// <response code="200">All movies was retrived</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IEnumerable<MovieReadDTO>> GetAll()
@@ -47,7 +55,7 @@ namespace MovieCharactersAPI.Controller
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MovieReadDTO>> GetById(int id)
         {
-            if (!_repository.Exsist(id))
+            if (!_repository.Exist(id))
             {
                 return NotFound();
             }
@@ -56,17 +64,28 @@ namespace MovieCharactersAPI.Controller
             return Ok(_mapper.Map<MovieReadDTO>(movie));
         }
 
+        /// <summary>
+        /// Update an existing movie
+        /// </summary>
+        /// <param name="id">The id for the movie to update</param>
+        /// <param name="movieDTO">Data to update</param>
+        /// <returns></returns>
+        /// <response code="204">Movie was updated</response>
+        /// <response code="400">Ids not matching</response>
+        /// <response code="404">Movie not found</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> PutMovie(int id, MovieEditDTO movieDTO)
         {
 
             if (id != movieDTO.MovieId)
             {
-                return BadRequest();
+                return BadRequest("Ids not matching");
             }
-            if (!_repository.Exsist(id))
+            if (!_repository.Exist(id))
             {
-                return NotFound();
+                return NotFound("Movie was not found");
             }
 
             Movie movie = _mapper.Map<Movie>(movieDTO);
@@ -75,33 +94,46 @@ namespace MovieCharactersAPI.Controller
             return NoContent();
         }
 
+        /// <summary>
+        /// Add a movie 
+        /// </summary>
+        /// <param name="movieDTO">Data to add to the movie</param>
+        /// <returns>The movie created</returns>
+        /// <response code="400">Movie creation faild</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<MovieReadDTO>> PostMovie(MovieCreateDTO movieDTO)
         {
-
             Movie movie = _mapper.Map<Movie>(movieDTO);
-
             try
             {
                 movie = await _repository.Create(movie);
             }
             catch 
             {
-                return BadRequest();
+                return BadRequest("Movie was added");
             }
-            
-
+           
             return base.CreatedAtAction("GetById",
                 new { id = movie.MovieId },
                 _mapper.Map<MovieReadDTO>(movie));
         }
 
+        /// <summary>
+        /// Delete a movie
+        /// </summary>
+        /// <param name="id">The id for the movie to delete</param>
+        /// <returns></returns>
+        /// <reponse code="204">Movie was deleted</reponse>
+        /// <reponse code="404">Movie was not found</reponse>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteMovie(int id)
         {
-            if (!_repository.Exsist(id))
+            if (!_repository.Exist(id))
             {
-                return NotFound();
+                return NotFound("Movie was not found");
             }
 
             await _repository.Delete(id);
@@ -109,11 +141,21 @@ namespace MovieCharactersAPI.Controller
             return NoContent();
         }
 
+        /// <summary>
+        /// Add an existing character to an existing movie
+        /// </summary>
+        /// <param name="movieId">The movie id</param>
+        /// <param name="characterId">The character id</param>
+        /// <returns></returns>
+        /// <response code="204">The character was added</response>
+        /// <response code="404">The movie or character do not exist</response>
         [HttpPut]
         [Route("addCharacter")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> AddCharacterToMovie(int movieId, int characterId)
         {
-            if (!_repository.Exsist(movieId))
+            if (!_repository.Exist(movieId))
             {
                 return NotFound("The movie do not exist");
             }
@@ -134,15 +176,25 @@ namespace MovieCharactersAPI.Controller
             return NoContent();
         }
 
+        /// <summary>
+        /// Create and add a character to an existing movie
+        /// </summary>
+        /// <param name="characterDTO"></param>
+        /// <param name="movieId"></param>
+        /// <returns>The movie with the added character</returns>
+        /// <response code="404">Movie do not exist</response>
+        /// <response code="400">Concurrency violation</response>
         [HttpPost]
         [Route("createCharater")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<MovieReadDTO>> CreateCharacterAddToMovie(CharacterCreateDTO characterDTO, int movieId)
         {
-            if (!_repository.Exsist(movieId))
+            if (!_repository.Exist(movieId))
             {
                 return NotFound();
             }
-            Movie movie = null;
+            Movie movie;
             Character character = _mapper.Map<Character>(characterDTO);
             try
             {
@@ -152,13 +204,21 @@ namespace MovieCharactersAPI.Controller
             {
                 return BadRequest();
             }
-            
-
             return _mapper.Map<MovieReadDTO>(movie);
         }
 
+        /// <summary>
+        /// Remove a character from a movie
+        /// </summary>
+        /// <param name="movieId">Movie id</param>
+        /// <param name="characterId">Id for the character to remove</param>
+        /// <returns></returns>
+        /// <response code="400">The character do not belong to the movie</response>
+        /// <response code="204">The character was removed</response>
         [HttpPut]
         [Route("removeCharater")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> RemoveCharacterFromMovie(int movieId, int characterId)
         {
 
@@ -176,16 +236,22 @@ namespace MovieCharactersAPI.Controller
             {
                 throw;
             }
-           
-
+          
             return NoContent(); 
         }
 
+        /// <summary>
+        /// Get all Character in a specific movie
+        /// </summary>
+        /// <param name="id">Movie id</param>
+        /// <returns>A list of characters in the movie</returns>
+        /// <response code="404">Movie not found</response>
         [HttpGet]
         [Route("getCharacters")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharacters(int id)
         {
-            if (!_repository.Exsist(id))
+            if (!_repository.Exist(id))
             {
                 return NotFound();
             }
