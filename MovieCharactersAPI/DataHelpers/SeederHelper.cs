@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using MovieCharactersAPI.Model;
 
 namespace MovieCharactersAPI.DataHelpers
@@ -124,6 +121,10 @@ namespace MovieCharactersAPI.DataHelpers
             return movies;
         }
         
+        /// <summary>
+        /// Populate the linking table for thhe many to many relationship between Characters and Movies
+        /// </summary>
+        /// <returns>List of CharacterMovie</returns>
         public static List<CharacterMovie> CharacterMovies()
         {
             List<CharacterMovie> characterMovies = new List<CharacterMovie>()

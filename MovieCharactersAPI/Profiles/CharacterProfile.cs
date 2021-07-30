@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using AutoMapper;
 using MovieCharactersAPI.Model;
 using MovieCharactersAPI.Model.DTO.Character;
@@ -9,7 +6,8 @@ using MovieCharactersAPI.Model.DTO.Character;
 namespace MovieCharactersAPI.Profiles 
 {
     /// <summary>
-    /// Class <c>CharacterProfile</c> inherits from Profile and is used to map a character object to a characterDTO object and the reverse case.  
+    /// Class <c>CharacterProfile</c> inherits from Profile and is used to map a character object to a
+    /// characterDTO object and the reverse case.  
     /// </summary>
     public class CharacterProfile : Profile
     {

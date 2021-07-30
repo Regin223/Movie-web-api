@@ -1,7 +1,5 @@
 ﻿using MovieCharactersAPI.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Repositories
@@ -13,12 +11,10 @@ namespace MovieCharactersAPI.Repositories
     /// <typeparam name="T"></typeparam>
     public interface IFranchiseRepository : IRepository<Franchise>
     {
-
         public Task RemoveMovie(int franchiseId, int movieId);
         public Task AddMovie(Movie movie, int franchiseId);
         public Task AddMovie(int movieId, int franciseId);
         public Task<IEnumerable<Movie>> GetMovies(int franchiseId);
         public Task<IEnumerable<Character>> GetCharacters(int franchiseId);
-
     }
 }

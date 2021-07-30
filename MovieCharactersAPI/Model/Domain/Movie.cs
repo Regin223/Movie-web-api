@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Model
 {
@@ -12,7 +9,6 @@ namespace MovieCharactersAPI.Model
     /// </summary>
     public class Movie
     {
-
         public int MovieId { get; set; }
 
         [Required]
@@ -21,7 +17,6 @@ namespace MovieCharactersAPI.Model
 
         [MaxLength(50)]
         public string Genre { get; set; }
-
         public int ReleaseYear { get; set; }
 
         [MaxLength(50)]
@@ -31,9 +26,7 @@ namespace MovieCharactersAPI.Model
         public string Trailer { get; set; }
 
         public ICollection<CharacterMovie> CharacterMovies { get; set; }
-
         public int? FranchiseId { get; set; }
-
         public Franchise Franchise { get; set; }
     }
 }

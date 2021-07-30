@@ -21,6 +21,7 @@ namespace MovieCharactersAPI.Repositories
         {
             _dbContext = context;
         }
+
         /// <summary>
         /// Returns all franchises in the database.
         /// </summary>
@@ -29,6 +30,7 @@ namespace MovieCharactersAPI.Repositories
         {
             return await _dbContext.Franchises.Include(m => m.Movies).ToListAsync();
         }
+
         /// <summary>
         /// Returns a franchise object where franchise id equals the input id.
         /// </summary>
@@ -41,7 +43,7 @@ namespace MovieCharactersAPI.Repositories
         }
  
         /// <summary>
-        /// Updating an exsisting character.
+        /// Updating an existing character.
         /// </summary>
         /// <param name="entity">Takes in a character object</param>
         /// <returns>Nothing</returns>
@@ -70,10 +72,11 @@ namespace MovieCharactersAPI.Repositories
         /// </summary>
         /// <param name="id">franchise id</param>
         /// <returns>A bool</returns>
-        public bool Exsist(int id)
+        public bool Exist(int id)
         {
             return _dbContext.Franchises.Any(f => f.FranchiseId == id);
         }
+
         /// <summary>
         /// Updating the foreign key for a movie so it exists in a franchise.
         /// </summary>
@@ -91,6 +94,7 @@ namespace MovieCharactersAPI.Repositories
             _dbContext.Update(movie);
             await _dbContext.SaveChangesAsync();
         }
+
         /// <summary>
         /// Adding a movie to the database and adding it to a franchise.
         /// </summary>
@@ -124,7 +128,6 @@ namespace MovieCharactersAPI.Repositories
             _dbContext.Remove(franchise);
 
             await _dbContext.SaveChangesAsync();
-
         }
 
         /// <summary>
@@ -168,7 +171,6 @@ namespace MovieCharactersAPI.Repositories
             List<int> characterIds = await _dbContext.CharacterMovies.Where(cm => moviesIds.Contains(cm.MovieId)).Select(cm => cm.CharacterId).ToListAsync();
             List<Character> characters = await _dbContext.Characters.Where(c => characterIds.Contains(c.CharacterId)).ToListAsync();
             return characters;
-
         }
     }
 }

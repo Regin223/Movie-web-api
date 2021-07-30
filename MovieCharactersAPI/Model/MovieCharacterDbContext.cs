@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MovieCharactersAPI.DataHelpers;
 
 namespace MovieCharactersAPI.Model
@@ -11,7 +7,8 @@ namespace MovieCharactersAPI.Model
     public class MovieCharacterDbContext : DbContext
     {
         /// <summary>
-        /// The class <c>MovieCharacterDBContext</c> is used for setting up a database. Overriding the OnModelCreating to seed the database data.
+        /// The class <c>MovieCharacterDBContext</c> is used for setting up a database. Overriding the
+        /// OnModelCreating to seed the database data.
         /// </summary>
         public MovieCharacterDbContext(DbContextOptions options) : base(options)
         {
