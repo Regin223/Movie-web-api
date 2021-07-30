@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Model.DTO.Movie
 {
+    /// <summary>
+    /// Class <c>MovieEditDTO</c> represent the model for a MovieEditDTO with necessary properties. 
+    /// Used when a user edit a movie. 
+    /// </summary>
     public class MovieEditDTO
     {
         public int MovieId { get; set; }

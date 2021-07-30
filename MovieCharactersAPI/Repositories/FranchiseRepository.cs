@@ -7,33 +7,55 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Repositories
 {
+    /// <summary>
+    /// Class <c>FranchiseRepository</c> is the repository for franchises. 
+    /// The repository is responsible for the communication with the database.
+    /// Inherits from IFranchiseRepository
+    /// </summary>
     public class FranchiseRepository : IFranchiseRepository
     {
 
         private readonly MovieCharacterDbContext _dbContext;
-        
-
-
+     
         public FranchiseRepository(MovieCharacterDbContext context)
         {
             _dbContext = context;
         }
+        /// <summary>
+        /// Returns all franchises in the database.
+        /// </summary>
+        /// <returns>A List of franchises</returns>
         public async Task<IEnumerable<Franchise>> GetAll()
         {
             return await _dbContext.Franchises.Include(m => m.Movies).ToListAsync();
         }
-
+        /// <summary>
+        /// Returns a franchise object where franchise id equals the input id.
+        /// </summary>
+        /// <param name="id">franchise id</param>
+        /// <returns>A franchise object</returns>
         public async Task<Franchise> GetById(int id)
         {
             Franchise franchise = await _dbContext.Franchises.Include(m => m.Movies).Where(f => f.FranchiseId == id).FirstAsync();
             return franchise;
         }
+ 
+        /// <summary>
+        /// Updating an exsisting character.
+        /// </summary>
+        /// <param name="entity">Takes in a character object</param>
+        /// <returns>Nothing</returns>
         public async Task Update(Franchise entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Adding a new character.
+        /// </summary>
+        /// <param name="entity">Takes in a character object</param>
+        /// <returns>A character object</returns>
         public async Task<Franchise> Create(Franchise entity)
         {
             await _dbContext.Franchises.AddAsync(entity);
@@ -41,12 +63,23 @@ namespace MovieCharactersAPI.Repositories
             return entity;
         }
 
-
-        public bool Exist(int id)
+        /// <summary>
+        /// Checks if a franchise exsists.
+        /// True if the franchise exists.
+        /// False if the franchise does not exsists.
+        /// </summary>
+        /// <param name="id">franchise id</param>
+        /// <returns>A bool</returns>
+        public bool Exsist(int id)
         {
             return _dbContext.Franchises.Any(f => f.FranchiseId == id);
         }
-
+        /// <summary>
+        /// Updating the foreign key for a movie so it exists in a franchise.
+        /// </summary>
+        /// <param name="movieId">Id for the movie</param>
+        /// <param name="franciseId">Id for the franchise</param>
+        /// <returns></returns>
         public async Task AddMovie(int movieId, int franciseId)
         {
             if(!_dbContext.Movies.Any(m => m.MovieId == movieId))
@@ -58,7 +91,11 @@ namespace MovieCharactersAPI.Repositories
             _dbContext.Update(movie);
             await _dbContext.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// Adding a movie to the database and adding it to a franchise.
+        /// </summary>
+        /// <param name="movie">The movie object to add</param>
+        /// <param name="franchiseId">Id for the franchise</param>
         public async Task AddMovie(Movie movie, int franchiseId)
         {
             // Create and add movie
@@ -67,6 +104,11 @@ namespace MovieCharactersAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Deletes a franchise that equals the input id. 
+        /// </summary>
+        /// <param name="id">takes in a franchise id</param>
+        /// <returns>Nothing</returns>
         public async Task Delete(int id)
         {
             // Set FranchiseId to null in the Movies table
@@ -85,6 +127,12 @@ namespace MovieCharactersAPI.Repositories
 
         }
 
+        /// <summary>
+        /// Removes a movie from a franchise.
+        /// </summary>
+        /// <param name="franchiseId">id for the franchise</param>
+        /// <param name="movieId">id for the movie to remove</param>
+        /// <returns></returns>
         public async Task RemoveMovie(int franchiseId, int movieId)
         {
             var movies = await _dbContext.Franchises.Where(fId => fId.FranchiseId == franchiseId).SelectMany(m => m.Movies).ToListAsync();
@@ -99,11 +147,21 @@ namespace MovieCharactersAPI.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Get all movies in a franchise.
+        /// </summary>
+        /// <param name="franchiseId">franchise id</param>
+        /// <returns>A List of movies</returns>
         public async Task<IEnumerable<Movie>> GetMovies(int franchiseId)
         {
             return await _dbContext.Movies.Where(m => m.FranchiseId == franchiseId).ToListAsync();
         }
 
+        /// <summary>
+        /// Get all characters in a franchise. 
+        /// </summary>
+        /// <param name="franchiseId">id for the franchise</param>
+        /// <returns>A List of characters</returns>
         public async Task<IEnumerable<Character>> GetCharacters(int franchiseId)
         {
             List<int> moviesIds = await _dbContext.Movies.Where(f => f.FranchiseId == franchiseId).Select(m => m.MovieId).ToListAsync();

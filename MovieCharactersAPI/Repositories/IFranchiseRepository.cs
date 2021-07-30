@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Repositories
 {
+    /// <summary>
+    /// Interface <c>IFranchiseRepository</c> with functions additional to crud.
+    /// Inherits from IRepository.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IFranchiseRepository : IRepository<Franchise>
     {
 

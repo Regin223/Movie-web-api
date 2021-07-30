@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Profiles
 {
+    /// <summary>
+    /// Class <c>MovieProfile</c> inherits from Profile and is used to map a movie object to a movieDTO object and the reverse case.  
+    /// </summary>   
     public class MovieProfile : Profile
     {
         public MovieProfile()
