@@ -64,9 +64,9 @@ namespace MovieCharactersAPI.Repositories
         }
 
         /// <summary>
-        /// Checks if a franchise exsists.
+        /// Checks if a franchise exists.
         /// True if the franchise exists.
-        /// False if the franchise does not exsists.
+        /// False if the franchise does not exists.
         /// </summary>
         /// <param name="id">franchise id</param>
         /// <returns>A bool</returns>
@@ -158,7 +158,7 @@ namespace MovieCharactersAPI.Repositories
         }
 
         /// <summary>
-        /// Get all characters in a franchise. 
+        /// Gets all characters in a franchise. 
         /// </summary>
         /// <param name="franchiseId">id for the franchise</param>
         /// <returns>A List of characters</returns>

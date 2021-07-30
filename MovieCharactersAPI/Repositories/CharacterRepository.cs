@@ -39,9 +39,9 @@ namespace MovieCharactersAPI.Repositories
             return character;
         }
         /// <summary>
-        /// Checks if a character exsists.
+        /// Checks if a character exists.
         /// True if the character exists.
-        /// False if the character does not exsists.
+        /// False if the character does not exists.
         /// </summary>
         /// <param name="id">character id</param>
         /// <returns>A bool</returns>
