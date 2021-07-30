@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Model
 {
@@ -12,7 +9,6 @@ namespace MovieCharactersAPI.Model
     /// </summary>
     public class Character
     {
-
         public int CharacterId { get; set; }
 
         [Required]
@@ -30,6 +26,5 @@ namespace MovieCharactersAPI.Model
         public string Picture { get; set; }
 
         public ICollection<CharacterMovie> CharacterMovies { get; set; }
-
     }
 }

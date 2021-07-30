@@ -57,7 +57,7 @@ namespace MovieCharactersAPI.Controller
         {
             if (!_repository.Exist(id))
             {
-                return NotFound();
+                return NotFound($"A movie with the id: {id} was not found");
             }
             var movie = await _repository.GetById(id);
 
@@ -85,7 +85,7 @@ namespace MovieCharactersAPI.Controller
             }
             if (!_repository.Exist(id))
             {
-                return NotFound("Movie was not found");
+                return NotFound($"A movie with the id: {id} was not found");
             }
 
             Movie movie = _mapper.Map<Movie>(movieDTO);
@@ -100,8 +100,10 @@ namespace MovieCharactersAPI.Controller
         /// <param name="movieDTO">Data to add to the movie</param>
         /// <returns>The movie created</returns>
         /// <response code="400">Movie creation faild</response>
+        /// <response code="201">Movie was successfully added</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<MovieReadDTO>> PostMovie(MovieCreateDTO movieDTO)
         {
             Movie movie = _mapper.Map<Movie>(movieDTO);
@@ -133,7 +135,7 @@ namespace MovieCharactersAPI.Controller
         {
             if (!_repository.Exist(id))
             {
-                return NotFound("Movie was not found");
+                return NotFound($"A movie with the id: {id} was not found");
             }
 
             await _repository.Delete(id);
@@ -157,7 +159,7 @@ namespace MovieCharactersAPI.Controller
         {
             if (!_repository.Exist(movieId))
             {
-                return NotFound("The movie do not exist");
+                return NotFound($"A movie with the id: {movieId} was not found");
             }
 
             try
@@ -170,7 +172,7 @@ namespace MovieCharactersAPI.Controller
             }
             catch
             {
-                return NotFound("The character do not exist");
+                return NotFound($"A character with the id: {characterId} was not found");
             }
 
             return NoContent();
@@ -184,15 +186,17 @@ namespace MovieCharactersAPI.Controller
         /// <returns>The movie with the added character</returns>
         /// <response code="404">Movie do not exist</response>
         /// <response code="400">Concurrency violation</response>
+        /// <response code="200">The character was created and added to the movie</response>
         [HttpPost]
         [Route("createCharater")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<MovieReadDTO>> CreateCharacterAddToMovie(CharacterCreateDTO characterDTO, int movieId)
         {
             if (!_repository.Exist(movieId))
             {
-                return NotFound();
+                return NotFound($"A movie with the id: {movieId} was not found");
             }
             Movie movie;
             Character character = _mapper.Map<Character>(characterDTO);
@@ -204,7 +208,7 @@ namespace MovieCharactersAPI.Controller
             {
                 return BadRequest();
             }
-            return _mapper.Map<MovieReadDTO>(movie);
+            return Ok(_mapper.Map<MovieReadDTO>(movie));
         }
 
         /// <summary>
@@ -246,9 +250,11 @@ namespace MovieCharactersAPI.Controller
         /// <param name="id">Movie id</param>
         /// <returns>A list of characters in the movie</returns>
         /// <response code="404">Movie not found</response>
+        /// <response code="200">The characters was successfully retrived</response>
         [HttpGet]
         [Route("getCharacters")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharacters(int id)
         {
             if (!_repository.Exist(id))

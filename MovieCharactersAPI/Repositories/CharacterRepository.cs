@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -39,18 +38,18 @@ namespace MovieCharactersAPI.Repositories
             return character;
         }
         /// <summary>
-        /// Checks if a character exsists.
+        /// Checks if a character exists.
         /// True if the character exists.
-        /// False if the character does not exsists.
+        /// False if the character does not exists.
         /// </summary>
         /// <param name="id">character id</param>
         /// <returns>A bool</returns>
-        public bool Exsist(int id)
+        public bool Exist(int id)
         {
             return _dbContext.Characters.Any(c => c.CharacterId == id);
         }
         /// <summary>
-        /// Updating an exsisting character.
+        /// Updating an existing character.
         /// </summary>
         /// <param name="entity">Takes in a character object</param>
         /// <returns>Nothing</returns>

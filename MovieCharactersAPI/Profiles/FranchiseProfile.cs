@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using MovieCharactersAPI.Model;
 using MovieCharactersAPI.Model.DTO.Franchise;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MovieCharactersAPI.Profiles
 {
     /// <summary>
-    /// Class <c>FranchiseProfile</c> inherits from Profile and is used to map a franchise object to a franchiseDTO object and the reverse case.  
+    /// Class <c>FranchiseProfile</c> inherits from Profile and is used to map a franchise object to a
+    /// franchiseDTO object and the reverse case.  
     /// </summary>
     public class FranchiseProfile : Profile
     {
